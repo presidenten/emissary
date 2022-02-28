@@ -371,7 +371,6 @@ func (sh *SnapshotHolder) K8sUpdate(
 	parseAnnotationsTimer := dbg.Timer("parseAnnotations")
 	reconcileSecretsTimer := dbg.Timer("reconcileSecrets")
 	reconcileConsulTimer := dbg.Timer("reconcileConsul")
-	reconcileAuthServicesTimer := dbg.Timer("scrubAuthServices")
 
 	endpointsChanged := false
 	dispatcherChanged := false
@@ -437,12 +436,6 @@ func (sh *SnapshotHolder) K8sUpdate(
 		}
 		reconcileConsulTimer.Time(func() {
 			err = ReconcileConsul(ctx, consulWatcher, sh.k8sSnapshot)
-		})
-		if err != nil {
-			return false, err
-		}
-		reconcileAuthServicesTimer.Time(func() {
-			err = ReconcileAuthServices(ctx, sh, &deltas)
 		})
 		if err != nil {
 			return false, err

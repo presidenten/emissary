@@ -32,6 +32,7 @@ go-mod-tidy/tools/%:
 # =============
 #
 tools/copy-ifchanged      = $(tools.bindir)/copy-ifchanged
+tools/devversion          = $(tools.bindir)/devversion
 tools/docker-promote      = $(tools.bindir)/docker-promote
 tools/move-ifchanged      = $(tools.bindir)/move-ifchanged
 tools/tap-driver          = $(tools.bindir)/tap-driver
@@ -148,5 +149,10 @@ $(tools.bindir)/kubectl: $(tools.mk)
 	mkdir -p $(@D)
 	curl -o $@ -L --fail https://storage.googleapis.com/kubernetes-release/release/v$(KUBECTL_VERSION)/bin/$(GOHOSTOS)/$(GOHOSTARCH)/kubectl
 	chmod 755 $@
+
+# Inter-tool dependencies
+# =======================
+#
+$(tools/devversion): $(tools/goversion)
 
 endif
